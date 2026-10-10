@@ -1,0 +1,140 @@
+Building Rome from a Single Image
+Copyright 2026 The Build Rome Authors
+
+Original project code and project-authored modifications are licensed under
+Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0).
+See the root LICENSE for the complete, unmodified license text.
+
+This license applies only to the project's original contributions. It does not
+replace or restrict licenses granted by third-party authors for their material.
+This file preserves upstream attribution and does not assign new copyright
+ownership. Every source file under build_rome/ and inference/ carries a header:
+files written for this project are Copyright 2026 The Build Rome Authors under
+CC BY-NC 4.0, and files that contain code derived from TRELLIS.2 or TRELLIS say
+so; the derived portions remain available under the MIT License.
+
+Branding and the paper teaser are excluded from this
+code license. The fine-tuned model weights are distributed separately, see
+"Model weights" below.
+
+Bundled and adapted code
+-----------------------
+
+TRELLIS.2 and TRELLIS
+  Source: https://github.com/microsoft/TRELLIS.2
+          https://github.com/microsoft/TRELLIS
+  Copyright (c) Microsoft Corporation.
+  License: MIT.
+  This repository adapts TRELLIS-family model, module, and utility
+  components in build_rome/ and bundles TRELLIS.2's o-voxel extension.
+  Upstream license texts are retained in:
+    third_party/licenses/TRELLIS.2-MIT.txt
+    third_party/licenses/TRELLIS-MIT.txt
+  o-voxel/LICENSE contains the MIT text from the TRELLIS.2 parent repository.
+  Existing o-voxel author and copyright headers are retained, including
+  Copyright (C) 2025, Jianfeng XIANG in its API headers.
+  Files under build_rome/ that contain code derived from TRELLIS.2 or TRELLIS
+  name the upstream project in their header. The vendored o-voxel/ package
+  remains under its MIT license.
+
+GLIDE timestep embedding
+  Source: https://github.com/openai/glide-text2im
+  Copyright (c) 2021 OpenAI.
+  License: MIT; retained in third_party/licenses/GLIDE-MIT.txt.
+  build_rome/models/sparse_structure_flow.py cites the upstream nn.py
+  timestep-embedding implementation.
+
+Eigen
+  Bundled location: o-voxel/third_party/eigen/
+  Source: https://gitlab.com/libeigen/eigen
+  Eigen's file-level terms include MPL-2.0 and separately licensed components.
+  Preserve the original source headers and these existing legal files:
+    LICENSE
+    COPYING.MPL2
+    COPYING.APACHE
+    COPYING.BSD
+    COPYING.MINPACK
+    COPYING.README
+    bench/btl/COPYING
+  Consult each component's own notice rather than treating the subtree as
+  uniformly Apache-2.0 or MIT.
+
+Separately obtained dependencies and model assets
+------------------------------------------------
+
+The installer obtains dependencies from their upstream sources; their license
+terms are not replaced by this repository's license.
+
+MoGe / MoGe-3
+  Source: https://github.com/microsoft/MoGe
+  MoGe code is MIT, with Apache-2.0 terms for upstream vendored DINOv2 material.
+  MoGe-3 model: https://huggingface.co/Ruicheng/moge-3-vitg
+  Its public model card lists MIT. Refer to the upstream LICENSE and exact
+  model-specific terms when obtaining code or checkpoints.
+
+DINOv3
+  Code: https://github.com/facebookresearch/dinov3
+  Model: https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m
+  License: DINOv3 License,
+  https://ai.meta.com/resources/models-and-libraries/dinov3-license
+  The DINOv3 weights are downloaded from the upstream source at run time and
+  are not redistributed here; obtain access and accept the DINOv3 License
+  there. The image features that condition this model are computed with DINOv3.
+  Built with DINOv3.
+
+TRELLIS / TRELLIS.2 model weights
+  Sources: https://huggingface.co/microsoft/TRELLIS-image-large
+           https://huggingface.co/microsoft/TRELLIS.2-4B
+  The upstream TRELLIS.2 project states that its code and model are MIT.
+  Review the exact model repository terms for the assets downloaded by this
+  project. These upstream weights are not bundled in this repository.
+
+nvdiffrast
+  Pinned source: https://github.com/NVlabs/nvdiffrast/tree/v0.4.0
+  Terms: https://github.com/NVlabs/nvdiffrast/blob/v0.4.0/LICENSE.txt
+  The pinned release uses the NVIDIA Source Code License (1-Way Commercial):
+  the work and derivative works may be used non-commercially only, meaning for
+  research or evaluation purposes. Do not infer commercial-use permission from
+  this project's license. It is installed by setup.sh, not bundled.
+
+nvdiffrec renderutils (optional installer flag)
+  Source: https://github.com/JeffreyXiang/nvdiffrec/tree/renderutils
+  Review the NVIDIA license in that branch. This optional dependency also has
+  noncommercial-use restrictions and is not covered by the project's license.
+
+Additional installed dependencies
+  CuMesh: https://github.com/JeffreyXiang/CuMesh (MIT)
+  FlexGEMM: https://github.com/JeffreyXiang/FlexGEMM (MIT)
+  utils3d: https://github.com/EasternJournalist/utils3d (MIT)
+  FlashAttention: https://github.com/Dao-AILab/flash-attention (BSD-3-Clause)
+  Other Python dependencies are listed in setup.sh.
+  Retain and follow each dependency's license and notices.
+
+Model weights
+-------------
+
+The fine-tuned weights (LoRA adapters and conditioning branches) are released
+separately at https://huggingface.co/AppliedIntuitionResearch/BuildRome under
+CC BY-NC 4.0, non-commercial use only. They are applied on top of the public
+TRELLIS.2-4B base weights (MIT) and use DINOv3 image features (DINOv3 License).
+
+The weights were trained on:
+  SAGE-10k (https://huggingface.co/datasets/nvidia/SAGE-10k), NVIDIA,
+    Apache License 2.0.
+  Indoor scenes generated with Infinigen (https://github.com/princeton-vl/infinigen),
+    Princeton Vision & Learning Lab, BSD-3-Clause.
+  About 4,000 synthetic outdoor scenes built with the pipeline described in the
+    paper (Section on outdoor supervision and its appendix): scene prompts and
+    plans from GPT-5.6, object completion with Nano Banana, object meshes from
+    TRELLIS.2, ground layout from MoGe-3, and a SAGE-style layout solver.
+No training data is distributed in this repository or with the weights.
+
+Website branding and teaser
+---------------------------
+
+assets/brand/ contains Applied Intuition branding from its open-source code
+repository template. It is not a grant of trademark rights.
+
+assets/teaser/teaser.png is a rendered copy of the teaser figure of the paper
+Building Rome from a Single Image (arXiv:2610.08790). Its inclusion here does not
+change the applicable rights in the figure or its source images.
